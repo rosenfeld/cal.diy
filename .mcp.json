@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "fifa-calendar": {
+      "type": "stdio",
+      "command": "/home/rodrigo/.nvm/versions/node/v20.19.6/bin/node",
+      "args": ["/home/rodrigo/tmp/cal.diy/fifa/mcp-server/index.js"],
+      "cwd": "/home/rodrigo/tmp/cal.diy/fifa/mcp-server"
+    }
+  }
+}
