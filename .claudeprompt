@@ -1,0 +1,2 @@
+Sempre que você criar, modificar ou revisar qualquer código neste projeto, você DEVE ler obrigatoriamente o arquivo `eval.md` localizado na raiz do projeto. 
+Use os critérios de aceite definidos no `eval.md` como a métrica absoluta de sucesso. O código gerado só será considerado correto se passar em 100% dos pontos listados lá.
