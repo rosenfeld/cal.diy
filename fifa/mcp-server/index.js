@@ -4,31 +4,7 @@ import { z } from "zod";
 import { readFileSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const CALENDAR_PATH = resolve(__dirname, "../calendario.json");
-
-function loadCalendar() {
-  const raw = readFileSync(CALENDAR_PATH, "utf-8");
-  return JSON.parse(raw);
-}
-
-function formatGame(game) {
-  const score =
-    game.score.team1 !== null && game.score.team2 !== null
-      ? `${game.score.team1} x ${game.score.team2}`
-      : "Ainda não realizado";
-
-  return (
-    `ID: ${game.id}\n` +
-    `Data: ${game.date} ${game.time} (${game.timezone})\n` +
-    `Jogo: ${game.team1} vs ${game.team2}\n` +
-    `Placar: ${score}\n` +
-    `Fase: ${game.phase}` +
-    (game.group ? ` — ${game.group}` : "") +
-    `\nLocal: ${game.venue}, ${game.city}`
-  );
-}
+import { filterGames } from "./filters.js";
 
 const server = new McpServer({
   name: "fifa-calendar",
@@ -39,20 +15,17 @@ server.registerTool(
   "list_games",
   {
     description:
-      "Lista os jogos da Copa do Mundo FIFA 2026. Aceita filtros opcionais por fase, grupo e data.",
+      "Lista os jogos da Copa do Mundo FIFA 2026. Aceita filtros opcionais por fase, grupo, data e time/seleção.",
     inputSchema: {
       phase: z.string().optional().describe("Filtrar por fase (ex: 'Fase de Grupos')"),
       group: z.string().optional().describe("Filtrar por grupo (ex: 'Grupo A')"),
       date: z.string().optional().describe("Filtrar por data no formato YYYY-MM-DD"),
+      team: z.string().optional().describe("Filtrar por time/seleção (ex: 'Brasil', 'bra'). Aceita correspondência parcial e não diferencia maiúsculas de minúsculas."),
     },
   },
-  ({ phase, group, date }) => {
+  ({ phase, group, date, team }) => {
     const { tournament, games } = loadCalendar();
-
-    let filtered = games;
-    if (phase) filtered = filtered.filter((g) => g.phase.toLowerCase().includes(phase.toLowerCase()));
-    if (group) filtered = filtered.filter((g) => g.group?.toLowerCase().includes(group.toLowerCase()));
-    if (date) filtered = filtered.filter((g) => g.date === date);
+    const filtered = filterGames(games, { phase, group, date, team });
 
     if (filtered.length === 0) {
       return { content: [{ type: "text", text: "Nenhum jogo encontrado com os filtros informados." }] };
@@ -117,13 +90,15 @@ server.registerTool(
 server.registerTool(
   "games_today",
   {
-    description: "Lista os jogos da Copa do Mundo FIFA 2026 agendados para hoje.",
-    inputSchema: {},
+    description: "Lista os jogos da Copa do Mundo FIFA 2026 agendados para hoje. Aceita filtro opcional por time/seleção.",
+    inputSchema: {
+      team: z.string().optional().describe("Filtrar por time/seleção (ex: 'Brasil', 'bra'). Aceita correspondência parcial e não diferencia maiúsculas de minúsculas."),
+    },
   },
-  () => {
+  ({ team } = {}) => {
     const { tournament, games } = loadCalendar();
     const today = new Date().toISOString().split("T")[0];
-    const todayGames = games.filter((g) => g.date === today);
+    const todayGames = filterGames(games, { date: today, team });
 
     if (todayGames.length === 0) {
       return {
@@ -140,3 +115,30 @@ server.registerTool(
 
 const transport = new StdioServerTransport();
 await server.connect(transport);
+
+// ─── Low-level helpers (called by the tool handlers above) ───────────────────
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const CALENDAR_PATH = resolve(__dirname, "../calendario.json");
+
+function loadCalendar() {
+  const raw = readFileSync(CALENDAR_PATH, "utf-8");
+  return JSON.parse(raw);
+}
+
+function formatGame(game) {
+  const score =
+    game.score.team1 !== null && game.score.team2 !== null
+      ? `${game.score.team1} x ${game.score.team2}`
+      : "Ainda não realizado";
+
+  return (
+    `ID: ${game.id}\n` +
+    `Data: ${game.date} ${game.time} (${game.timezone})\n` +
+    `Jogo: ${game.team1} vs ${game.team2}\n` +
+    `Placar: ${score}\n` +
+    `Fase: ${game.phase}` +
+    (game.group ? ` — ${game.group}` : "") +
+    `\nLocal: ${game.venue}, ${game.city}`
+  );
+}
