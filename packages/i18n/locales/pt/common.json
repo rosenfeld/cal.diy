@@ -1469,6 +1469,7 @@
   "enter_number_of_seats": "Digite um número de lugares",
   "you_can_manage_your_schedules": "Pode gerir os seus horários na página de Disponibilidade.",
   "booking_full": "Não há mais lugares disponíveis",
+  "outside_business_hours": "Fora do horário comercial",
   "api_keys": "Chaves de API",
   "api_key": "Chave da API",
   "test_api_key": "Testar chave da API",

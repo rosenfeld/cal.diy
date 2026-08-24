@@ -147,6 +147,11 @@ const SlotItem = ({
   };
 
   const isTimeslotUnavailable = unavailableTimeSlots.includes(slot.time);
+
+  const slotHour = computedDateWithUsersTimezone.hour();
+  const slotDay = computedDateWithUsersTimezone.day(); // 0=Sun, 6=Sat
+  const isOutsideBusinessHours = slotDay === 0 || slotDay === 6 || slotHour < 9 || slotHour >= 18;
+
   return (
     <AnimatePresence>
       <div className="flex gap-2">
@@ -183,6 +188,9 @@ const SlotItem = ({
             {computedDateWithUsersTimezone.format(timeFormat)}
           </div>
           {bookingFull && <p className="text-sm">{t("booking_full")}</p>}
+          {isOutsideBusinessHours && !bookingFull && (
+            <p className="text-xs text-amber-600 dark:text-amber-400">{t("outside_business_hours")}</p>
+          )}
           {hasTimeSlots && !bookingFull && (
             <p className="flex items-center text-sm">
               <span
