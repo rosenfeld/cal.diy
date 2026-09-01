@@ -1484,6 +1484,7 @@
   "enter_number_of_seats": "Enter number of seats",
   "you_can_manage_your_schedules": "You can manage your schedules on the Availability page.",
   "booking_full": "No more seats available",
+  "outside_business_hours": "Outside business hours",
   "api_keys": "API keys",
   "api_key": "API key",
   "test_api_key": "Test API key",
