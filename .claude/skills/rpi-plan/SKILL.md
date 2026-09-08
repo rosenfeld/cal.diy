@@ -1,5 +1,5 @@
 ---
-name: plan
+name: rpi-plan
 description: Phase 2 of the RPI workflow — turns research findings into an ordered, reviewable implementation plan at `.claude/plans/<slug>/plan.md` using the Plan subagent, then stops for human approval. Use when asked to plan a change, design an approach before coding, or continue the RPI flow after research. Produces no code changes.
 ---
 
@@ -9,7 +9,7 @@ Second phase of **Research → Plan → Implement**. Turns *"what exists"* into 
 
 **This phase writes no code.** Its only output is a plan document plus an approval gate.
 
-Previous phase: `research`. Next phase: `implement`.
+Previous phase: `rpi-research`. Next phase: `rpi-implement`.
 
 ---
 
@@ -19,7 +19,7 @@ Resolve the `<slug>` from the skill argument, or from the task description the u
 
 Read `.claude/plans/<slug>/research.md`.
 
-If it does not exist, **do not improvise a plan from a cold read of the repo** — run the `research` skill first, then come back. Planning without research is how the wrong files get edited.
+If it does not exist, **do not improvise a plan from a cold read of the repo** — run the `rpi-research` skill first, then come back. Planning without research is how the wrong files get edited.
 
 If the research has unanswered **Open questions** that would change the shape of the solution, ask the user now. Questions that only affect details can be carried into the plan as stated assumptions.
 
@@ -102,6 +102,6 @@ Present to the user:
 
 Then **stop and wait for explicit approval.** Do not begin implementing, do not create a branch, do not edit a file.
 
-On approval, change the document's `**Status:**` line to `APPROVED` and tell the user to continue with the `implement` skill.
+On approval, change the document's `**Status:**` line to `APPROVED` and tell the user to continue with the `rpi-implement` skill.
 
 If the user asks for changes, revise `plan.md` and present it again. The status line stays `AWAITING APPROVAL` until they say yes.

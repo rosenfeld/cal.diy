@@ -1,5 +1,5 @@
 ---
-name: research
+name: rpi-research
 description: Phase 1 of the RPI workflow — maps the codebase for a task before any code is written, using read-only Explore subagents, and writes the findings to `.claude/plans/<slug>/research.md`. Use when asked to research a task, investigate how something works before changing it, or start the RPI flow. Produces no code changes.
 ---
 
@@ -9,7 +9,7 @@ First phase of **Research → Plan → Implement**. Answers *"what already exist
 
 **This phase writes no code.** Its only output is a research document. If you find yourself editing a source file, you are in the wrong phase.
 
-Next phase: `plan`.
+Next phase: `rpi-plan`.
 
 ---
 
@@ -82,7 +82,7 @@ Rules for the document:
 
 - Every claim about the codebase carries a `path:line` reference. A claim you could not verify goes under **Open questions**, not into the body.
 - Record what is *absent* too — "no existing helper for X" is a finding that shapes the plan.
-- Do not propose a solution here. Options and trade-offs belong to the `plan` phase.
+- Do not propose a solution here. Options and trade-offs belong to the `rpi-plan` phase.
 - Keep the domain decisions in `CLAUDE.md` in view (business hours, timezone handling, DST) — they are constraints, and contradicting them is a finding worth flagging.
 
 ---
@@ -94,4 +94,4 @@ Give the user:
 - A 3–5 bullet summary of what was found
 - Any **Open questions** that block planning — ask them now rather than letting the plan phase guess
 
-Then offer to continue with the `plan` skill. Do not start planning in the same breath; the user may want to correct the research first.
+Then offer to continue with the `rpi-plan` skill. Do not start planning in the same breath; the user may want to correct the research first.

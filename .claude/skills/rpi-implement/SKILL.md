@@ -1,5 +1,5 @@
 ---
-name: implement
+name: rpi-implement
 description: Phase 3 of the RPI workflow — executes an approved plan from `.claude/plans/<slug>/plan.md` step by step in the main agent, keeps the plan updated as it goes, and hands off to the open-pr skill. Use when asked to implement an approved plan, execute the plan, or finish the RPI flow.
 ---
 
@@ -9,7 +9,7 @@ Third and final phase of **Research → Plan → Implement**. Executes an approv
 
 Runs **in the main agent** — no implementation subagents. The plan is already the delegation; splitting the edits across agents just loses context between steps.
 
-Previous phase: `plan`. Hands off to: `open-pr`.
+Previous phase: `rpi-plan`. Hands off to: `open-pr`.
 
 ---
 
@@ -17,7 +17,7 @@ Previous phase: `plan`. Hands off to: `open-pr`.
 
 Read `.claude/plans/<slug>/plan.md`.
 
-- Missing file → run the `plan` skill first.
+- Missing file → run the `rpi-plan` skill first.
 - `**Status:** AWAITING APPROVAL` → **stop.** Show the plan and ask the user to approve it. Do not implement an unapproved plan, even if it looks obviously right.
 - `**Status:** APPROVED` → proceed.
 
