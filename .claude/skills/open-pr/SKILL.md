@@ -9,6 +9,8 @@ The full "local work → Pull Request" flow for this repository.
 
 **Fixed target:** everything happens on the **`rosenfeld/cal.diy`** fork — push to the `rosenfeld` remote, PR based on `rosenfeld/cal.diy:main`. Do not open a PR against `origin` (calcom), `jaya` or `favini` unless the user explicitly asks.
 
+**Entry points:** invoked directly, or as the hand-off from the `implement` skill (phase 3 of the Research → Plan → Implement flow). Either way this skill owns everything from the commit onwards.
+
 **Tooling:** use the `gh` CLI. The GitHub MCP server may be unavailable; `gh` is already authenticated as `rosenfeld`.
 
 ---
